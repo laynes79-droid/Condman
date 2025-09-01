@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CondoManager"
 include ':app'
-include ':backend' // Include the backend directory as a module (optional but good practice)
