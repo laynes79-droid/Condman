@@ -41,3 +41,6 @@ CondoManager is a full-stack application designed for condominium management, fe
 1.  **Open the project root** in Android Studio. It will sync using the included Gradle Wrapper.
 2.  **Ensure the backend is running** before starting the app.
 3.  **Build and run the app** on an emulator or device. The app is pre-configured to connect to the local backend.
+
+---
+*Syncing commit to refresh user interface.*
