@@ -1,46 +1,91 @@
-# CondoManager Application
+# CondoCare - Condominium Management System
 
-CondoManager is a full-stack application designed for condominium management, featuring an Android client and a Django backend.
+CondoCare is a full-stack application designed for condominium management. It allows managers to send communications to residents and enables residents to view these communications and their updates.
 
-## Features
+This project consists of two main components:
+1.  **A Django REST Framework backend**.
+2.  **A native Android client**.
 
-### 1. User Management
-- **User Roles & Authentication**: The application supports `MANAGER` and `RESIDENT` roles with a full login/registration system.
-- **Session Management**: The app remembers the logged-in user across sessions.
+## 1. Backend Setup (Django)
 
-### 2. Communication Management
-- **Create & View**: Users can create communications with `NORMAL` or `EMERGENCY` priority.
-- **Immutable History**: Communications cannot be edited or deleted.
-- **Complements**: Users can add comments to any open communication.
-- **Manager Actions**: Only `MANAGER` users can close a communication.
+The backend is a standard Django application that serves a RESTful API.
 
-### 3. Notifications
-- **Emergency Alerts**: A local notification is triggered for new emergency communications and any subsequent complements.
+### Prerequisites
 
-## Architecture
+-   Python 3.8+
+-   `pip` and `venv`
 
-- **Client-Server**: The Android app acts as a client to the Django backend.
-- **Repository Pattern**: On Android, the UI layer is decoupled from data sources via a `Repository`.
-- **Network Layer**: The Android app uses **Retrofit** for all network communication.
-- **Local Cache**: The Android app uses a `Room` database as a local cache.
-- **Backend**: The backend is built with **Django** and **Django REST Framework**, providing a full REST API.
+### Setup and Installation
 
-## How to Build & Run
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-folder>
+    ```
 
-### Backend Setup (Django)
+2.  **Create and activate a virtual environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
 
-1.  **Navigate to the backend directory**: `cd backend`
-2.  **Create a virtual environment** (recommended): `python -m venv venv` and activate it.
-3.  **Install dependencies**: `pip install -r requirements.txt`
-4.  **Run database migrations**: `python manage.py migrate`
-5.  **Start the server**: `python manage.py runserver`
-    The API will be running at `http://127.0.0.1:8000/`.
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-### Android App Setup
+4.  **Run database migrations:**
+    This will create the `db.sqlite3` file and set up the necessary tables.
+    ```bash
+    python manage.py migrate
+    ```
 
-1.  **Open the project root** in Android Studio. It will sync using the included Gradle Wrapper.
-2.  **Ensure the backend is running** before starting the app.
-3.  **Build and run the app** on an emulator or device. The app is pre-configured to connect to the local backend.
+### Running the Backend Server
 
----
-*Syncing commit to refresh user interface.*
+To start the development server, run the following command. The API will be available at `http://127.0.0.1:8000/`.
+
+```bash
+python manage.py runserver
+```
+
+### Running Backend Tests
+
+To run the automated tests for the API, use the following command:
+
+```bash
+python manage.py test api
+```
+
+## 2. Frontend Setup (Android)
+
+The frontend is a native Android application built with Kotlin.
+
+### Prerequisites
+
+-   Android Studio (latest version recommended)
+-   Android SDK
+
+### Setup and Installation
+
+1.  **Open the project in Android Studio:**
+    -   Open Android Studio.
+    -   Select "Open" or "Open an existing project".
+    -   Navigate to the cloned repository folder and select it.
+
+2.  **Sync Gradle:**
+    -   Android Studio should automatically sync the project and download all the required Gradle dependencies as defined in the `build.gradle.kts` files.
+
+### Running the Android App
+
+1.  **Ensure the backend server is running.** The Android app is configured to connect to the Django development server at `http://10.0.2.2:8000`, which is the special IP address Android emulators use to access the host machine's localhost.
+
+2.  **Run the app:**
+    -   Select an emulator or connect a physical device.
+    -   Click the "Run" button (green play icon) in Android Studio.
+
+### Running Android Tests
+
+Android Studio provides a simple interface for running tests.
+
+-   **Unit Tests**: Located in `app/src/test/`. Right-click on a test file or directory and select "Run 'Tests in ...'".
+-   **Instrumented (UI) Tests**: Located in `app/src/androidTest/`. Right-click on a test file or directory and select "Run 'Tests in ...'". These tests will run on an emulator or a physical device.

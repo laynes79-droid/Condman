@@ -1,34 +1,52 @@
-# AGENTS.md – Protocolo do Esquadrão JULES
-## Missão
+# AGENTS.MD - CondoCare Project
 
-Nossa missão é transformar a visão do usuário em software robusto, elegante e de alta qualidade, operando como uma unidade coesa e multifacetada. Somos o Esquadrão JULES: um time de especialistas que integra planejamento, execução e inovação em um fluxo de trabalho contínuo.
+This document provides instructions and guidelines for AI agents working on the CondoCare project.
 
-## Estrutura da Equipe e Papéis
+## Project Overview
 
-### 1. Arquiteto de Soluções
-**O Visionário Estratégico.** Transforma a necessidade do usuário em um blueprint técnico.
-- **Outputs:** Roadmap do produto, diagramas de arquitetura, especificações técnicas, backlog inicial priorizado.
+CondoCare is a condominium management system with two main components:
+1.  A **Django backend** that provides a RESTful API.
+2.  An **Android frontend** that consumes the API.
 
-### 2. Engenheiro de Software Full-Stack
-**O Construtor Versátil.** Domina tanto o frontend quanto o backend.
-- **Outputs:** Código-fonte funcional, testes unitários e de integração, APIs robustas, interfaces de usuário responsivas.
+## Technical Standards
 
-### 3. Engenheiro de Qualidade e DevOps
-**O Guardião da Excelência e da Automação.** Garante que a qualidade é construída em cada etapa.
-- **Outputs:** Suíte de testes automatizados (UI, API, performance), pipeline de build e deploy, relatórios de qualidade.
+### Backend (Django)
 
-### 4. Especialista em Documentação e UX
-**O Tradutor do Técnico para o Humano.** Cria a ponte entre a complexidade da aplicação e a clareza para o usuário.
-- **Outputs:** Documentação técnica, guias de usuário, planos de UAT, textos da interface.
+- **Structure**: The core logic resides in the `api` app.
+- **Models**: Use a custom User model (`api.models.User`) inheriting from `AbstractUser`.
+- **API**: Use Django Rest Framework (DRF).
+    - Use `ModelViewSet` for standard CRUD operations.
+    - Use `@action` for custom viewset actions (e.g., `close` communication).
+    - Use `TokenAuthentication` for authentication.
+- **Permissions**: Implement custom permissions (`IsManager`) for role-based access control.
+- **Testing**: Write API tests using `APITestCase`. Tests should cover business logic, permissions, and endpoint functionality.
 
-### 5. Estrategista de Inovação
-**O Catalisador do Futuro.** Mantém a equipe na vanguarda da tecnologia.
-- **Outputs:** Provas de conceito (PoCs), relatórios de tendências, sugestões de melhorias.
+### Frontend (Android)
 
-### 6. Engenheiro de Segurança e Release
-**O Protetor e Entregador.** Garante que o software chegue ao mundo de forma segura.
-- **Outputs:** Publicação segura da aplicação, gerenciamento de branches, políticas de segurança.
+- **Language**: Kotlin.
+- **Architecture**: MVVM (Model-View-ViewModel).
+    - **View**: Activities (`LoginActivity`, `MainActivity`, etc.) + XML Layouts. Use ViewBinding.
+    - **ViewModel**: `androidx.lifecycle.ViewModel`. Handles UI logic and data preparation.
+    - **Model**: Repository pattern (`CommunicationRepository`) as the single source of truth.
+- **Dependency Injection**: Use Hilt.
+    - Annotate Activities and ViewModels (`@AndroidEntryPoint`, `@HiltViewModel`).
+    - Provide dependencies via Hilt Modules (`@Module`).
+- **Networking**: Retrofit for API communication.
+- **Database**: Room for local caching. The repository should manage the cache.
+- **Concurrency**: Use Kotlin Coroutines for background tasks.
+- **Testing**:
+    - **Unit Tests**: JUnit4 for testing components like ViewModels and Converters. Use Mockito for mocking.
+    - **Instrumented Tests**: Espresso for UI testing. Use `MockWebServer` to mock API responses. Use a custom `HiltTestRunner` and test modules.
 
-### 7. Líder de Projeto / Scrum Master
-**O Facilitador e Harmonizador.** Remove impedimentos e mantém a comunicação transparente com o usuário.
-- **Outputs:** Sprint planning, daily stand-ups, sprint reviews, ambiente de trabalho produtivo.
+## Workflow
+
+1.  **Understand the Goal**: Read the user's request carefully.
+2.  **Explore**: Use `ls` and `read_file` to understand the current state of the relevant codebase (Android or Django).
+3.  **Plan**: Create a clear, step-by-step plan using `set_plan`. The plan should include testing.
+4.  **Implement**: Write code, following the technical standards defined above.
+5.  **Test**:
+    - For backend changes, run the Django tests: `python manage.py test api`
+    - For Android changes, run the unit and instrumented tests from the IDE (or using Gradle commands if necessary). You should at least write and verify the logic for the tests.
+6.  **Verify**: After making changes, use read-only tools to confirm the changes were applied correctly.
+7.  **Document**: If you add a new feature, ensure it is documented in the `README.md` and `instructions_ptbr.md`.
+8.  **Submit**: Once the task is complete and verified, request a code review before submitting.

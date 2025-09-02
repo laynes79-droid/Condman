@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".CondoCareApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,11 +14,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CondoManager"
+        android:theme="@style/Theme.CondoCare"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +26,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activity.RegisterUserActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".presentation.activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateCommunicationActivity"
+            android:name=".presentation.activity.CommunicationDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".CommunicationDetailActivity"
+            android:name=".presentation.activity.CreateCommunicationActivity"
             android:exported="false" />
     </application>
 

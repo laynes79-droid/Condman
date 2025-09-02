@@ -1,76 +1,91 @@
-# Guia de Testes de Aceitação do Usuário (UAT) - CondoManager
+# Instruções para Teste de Aceitação do Usuário (UAT) - CondoCare
 
-Olá! Este documento foi preparado pelo seu **Agente Assistente** para guiá-lo no processo de compilação e teste do aplicativo CondoManager. Siga os passos abaixo para validar as funcionalidades que implementamos juntos.
+Olá! Este documento irá guiá-lo através dos passos para testar a aplicação CondoCare. O objetivo é validar todas as funcionalidades principais do ponto de vista de um usuário final.
 
-## Pré-requisitos
+## Passo 1: Preparar o Ambiente
 
-1.  **Git**: Para baixar o código-fonte.
-2.  **Android Studio**: Para compilar e rodar o app.
-3.  **Python**: Para rodar o backend.
+Antes de começar, precisamos garantir que tanto o servidor de backend quanto a aplicação Android estejam rodando.
 
----
+### 1.1. Rodar o Servidor Backend (Django)
 
-## Passo 1: Obtendo o Código-Fonte
-
-1.  Abra um terminal (Git Bash, cmd, PowerShell).
-2.  Navegue até a pasta onde deseja salvar o projeto.
-3.  Execute o comando para clonar o repositório:
+1.  Abra um terminal ou prompt de comando.
+2.  Navegue até a pasta do projeto.
+3.  Ative o ambiente virtual (se ainda não estiver ativo):
+    -   **macOS/Linux**: `source venv/bin/activate`
+    -   **Windows**: `venv\Scripts\activate`
+4.  Inicie o servidor:
     ```bash
-    git clone <URL_DO_REPOSITORIO> CondoManager
+    python manage.py runserver
     ```
-    *(Substitua `<URL_DO_REPOSITORIO>` pela URL correta).*
+    Você deverá ver o servidor rodando. Mantenha este terminal aberto.
 
----
+### 1.2. Rodar a Aplicação (Android)
 
-## Passo 2: Configurando e Rodando o Backend
+1.  Abra o projeto no Android Studio.
+2.  Espere o Gradle sincronizar.
+3.  Inicie a aplicação em um emulador ou dispositivo físico clicando no botão "Run" (ícone de play verde).
 
-1.  No seu terminal, navegue para a pasta do backend: `cd CondoManager/backend`
-2.  Crie um ambiente virtual: `python -m venv venv`
-3.  Ative o ambiente virtual: `venv\Scripts\activate` (no Windows)
-4.  Instale as dependências: `pip install -r requirements.txt`
-5.  Aplique as migrações do banco de dados: `python manage.py migrate`
-6.  Inicie o servidor: `python manage.py runserver`
-7.  **Deixe este terminal aberto.** O servidor precisa ficar rodando para o app funcionar.
+## Passo 2: Teste de Fluxo - Cenários de Usuário
 
----
+Vamos simular o uso da aplicação por dois tipos de usuários: **Manager (Síndico)** e **Resident (Morador)**.
 
-## Passo 3: Compilando e Rodando o App Android
+### Cenário A: O Síndico (Manager)
 
-1.  Abra o **Android Studio**.
-2.  Clique em **Open** e navegue até a pasta `CondoManager` que você clonou.
-3.  Aguarde o Android Studio sincronizar o projeto. Isso pode levar alguns minutos.
-4.  Crie um emulador de dispositivo Android, se ainda não tiver um (**Tools > Device Manager**).
-5.  Selecione o emulador e clique no botão **Run 'app'** (ícone de play verde).
+#### A1. Registrar uma conta de Síndico
 
----
+1.  Na tela de login, clique no link **"Don't have an account? Register here."**.
+2.  Preencha o formulário de registro:
+    -   **Name**: `Síndico Teste`
+    -   **Email**: `sindico@teste.com`
+    -   **Password**: `senha123`
+    -   **Apartment**: `Admin`
+    -   **Role**: Selecione **Manager** no spinner.
+3.  Clique no botão **"Register"**.
+4.  Você deverá ver uma mensagem de "Registration successful!" e ser redirecionado para a tela de login.
 
-## Passo 4: Plano de Testes Manuais (UAT)
+#### A2. Criar um novo comunicado
 
-Com o backend rodando e o app aberto no emulador, siga estes cenários:
+1.  Faça login com a conta do síndico que você acabou de criar (`sindico@teste.com` / `senha123`).
+2.  Na tela principal, você deverá ver um botão flutuante de **"+"** no canto inferior direito. Clique nele.
+3.  Preencha o formulário do comunicado:
+    -   **Title**: `Teste de Manutenção`
+    -   **Message**: `O elevador estará em manutenção amanhã.`
+    -   **Emergency**: Deixe o switch desligado.
+4.  Clique no botão **"Create"**.
+5.  Você deverá ser redirecionado para a tela principal, e o novo comunicado **"Teste de Manutenção"** deve aparecer na lista.
 
-### Cenário 1: Registro e Login
-1.  Na tela de login, clique no link "Registre-se aqui."
-2.  Cadastre um novo usuário (ex: `Nome: Teste UAT`, `Contato: uat@teste.com`, `Senha: 123`).
-3.  Após o sucesso, na tela de login, entre com as credenciais `uat@teste.com` e `senha123`.
-- **Resultado Esperado:** Login bem-sucedido, você é levado para a tela principal.
+### Cenário B: O Morador (Resident)
 
-### Cenário 2: Criar Comunicado
-1.  Na tela principal, clique no botão `+`.
-2.  Crie um comunicado de emergência.
-- **Resultado Esperado:** O comunicado aparece na lista e uma notificação do sistema é exibida.
+#### B1. Registrar uma conta de Morador
 
-### Cenário 3: Encerrar Comunicado (Como Gestor)
-1.  Feche o app. No terminal onde o backend está rodando, pare o servidor (Ctrl+C).
-2.  Crie um usuário gestor: `python manage.py createsuperuser`. Siga os prompts para criar um admin.
-3.  Inicie o servidor novamente: `python manage.py runserver`.
-4.  No app, faça login com o superusuário que você criou.
-5.  Abra um comunicado e clique em "Encerrar Comunicado".
-- **Resultado Esperado:** O comunicado é marcado como encerrado e não é mais possível adicionar complementos.
+1.  Se você ainda estiver logado como síndico, precisará fazer logout. (Nota: A função de logout não foi solicitada, então você pode precisar fechar e reabrir o app para voltar à tela de login).
+2.  Na tela de login, clique para registrar uma nova conta.
+3.  Preencha o formulário:
+    -   **Name**: `Morador Teste`
+    -   **Email**: `morador@teste.com`
+    -   **Password**: `senha123`
+    -   **Apartment**: `101`
+    -   **Role**: Selecione **Resident** no spinner.
+4.  Clique em **"Register"**.
 
----
+#### B2. Visualizar comunicados e adicionar um complemento
 
-## Passo 5: Reportando os Resultados
+1.  Faça login com a conta do morador (`morador@teste.com` / `senha123`).
+2.  Na tela principal, você deverá ver o comunicado **"Teste de Manutenção"**. O botão de "+" não deve estar visível para moradores.
+3.  Clique no comunicado **"Teste de Manutenção"** para ver os detalhes.
+4.  Na tela de detalhes, no campo **"Add a complement"**, digite uma mensagem como `Obrigado por avisar!`.
+5.  Clique no botão **"Add"**.
+6.  O seu complemento deverá aparecer na lista de complementos abaixo, com seu nome e a data.
 
-Após concluir os testes, por favor, me informe se tudo ocorreu como esperado ou se encontrou algum problema. Um "tudo certo!" é o que esperamos ouvir.
+### Cenário C: O Síndico Encerra um Comunicado
 
-Obrigado pela colaboração!
+#### C1. Encerrar o comunicado
+
+1.  Faça login novamente com a conta do **Síndico**.
+2.  Na tela principal, clique no comunicado **"Teste de Manutenção"**.
+3.  Na tela de detalhes, você deverá ver um botão **"Close Communication"**. Clique nele.
+4.  O status do comunicado deverá mudar para **"Status: Closed"**, e o botão para fechar o comunicado deverá desaparecer.
+
+## Fim do Teste
+
+Se todos os passos acima funcionaram como descrito, o teste de aceitação foi um sucesso! Obrigado por testar o CondoCare.

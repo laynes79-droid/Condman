@@ -1,57 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".presentation.CreateCommunicationActivity">
 
     <EditText
-        android:id="@+id/editTextCommunicationTitle"
-        android:layout_width="match_parent"
+        android:id="@+id/editTextTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/create_communication_title_hint" />
+        android:hint="Title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/editTextCommunicationContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/editTextMessage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:hint="@string/create_communication_content_hint"
-        android:inputType="textMultiLine"
-        android:minLines="3" />
+        android:layout_marginBottom="8dp"
+        android:hint="Message"
+        android:gravity="top"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitle"
+        app:layout_constraintBottom_toTopOf="@+id/switchEmergency"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchEmergency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/create_communication_priority_label" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupPriority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radioButtonNormal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_communication_priority_normal"
-            android:checked="true" />
-
-        <RadioButton
-            android:id="@+id/radioButtonEmergency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_communication_priority_emergency" />
-    </RadioGroup>
+        android:text="Emergency"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCreate"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/buttonSendCommunication"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonCreate"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="@string/create_communication_send_button" />
+        android:text="Create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
