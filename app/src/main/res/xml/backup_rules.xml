@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- TODO Remove the following backup rules include and define what is backed up for your app -->
+    <include domain="sharedpref" path="."/>
+</full-backup-content>
